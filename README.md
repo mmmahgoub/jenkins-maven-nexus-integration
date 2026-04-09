@@ -27,9 +27,13 @@ The pipeline automates:
 ## 📂 Project Structure
 
 ├── Jenkinsfile
+
 ├── pom.xml
+
 └── src
+
 ├── main/java/com/example/App.java
+
 └── test/java/com/example/AppTest.java
 
 
@@ -61,23 +65,29 @@ Checkout – Pulls source code from repository
 Build & Test – Runs unit tests
 Package – Builds the JAR file
 Deploy – Pushes artifact to Nexus
+
 🔐 Credentials Management
+
 Nexus credentials are securely stored in Jenkins
 Credentials are injected during pipeline execution
 
 Test Reporting
 JUnit reports are generated and published in Jenkins
 Build status reflects test success/failure
+
 📦 Artifact Management
+
 Artifacts are stored in Nexus repositories:
 Snapshots → for development versions
 Releases → for stable versions
 
 💡 Key Highlights
+
 End-to-end CI/CD pipeline implementation
 Automated testing and artifact deployment
 Clean and minimal project structure
 Industry-standard tools and practices
+
 🎯 Purpose
 
 This project is designed to showcase:
