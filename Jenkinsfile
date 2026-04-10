@@ -1,56 +1,41 @@
-pipeline {
+def gv
+
+pipeline {   
     agent any
-
     tools {
-        maven 'Maven-3.9'
-        jdk 'JDK-17'
+        maven 'Maven3'
     }
-
-    environment {
-        MAVEN_OPTS = '-Dmaven.test.failure.ignore=false'
-    }
-
     stages {
-
-        stage('Checkout') {
+        stage("init") {
             steps {
-                checkout scm
-            }
-        }
-
-        stage('Build & Test') {
-            steps {
-                sh 'mvn clean test'
-            }
-        }
-
-        stage('Package') {
-            steps {
-                sh 'mvn package'
-            }
-        }
-
-        stage('Deploy to Nexus') {
-            steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'nexus-credentials',
-                    usernameVariable: 'NEXUS_USER',
-                    passwordVariable: 'NEXUS_PASS'
-                )]) {
-                    sh '''
-                    mvn deploy \
-                      -Dnexus.username=$NEXUS_USER \
-                      -Dnexus.password=$NEXUS_PASS
-                    '''
+                script {
+                    gv = load "script.groovy"
                 }
             }
         }
-    }
+        stage("build jar") {
+            steps {
+                script {
+                    gv.buildJar()
 
-    post {
-        always {
-            junit '**/target/surefire-reports/*.xml'
-            archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+                }
+            }
         }
+
+        stage("build image") {
+            steps {
+                script {
+                    gv.buildImage()
+                }
+            }
+        }
+
+        stage("deploy") {
+            steps {
+                script {
+                    gv.deployApp()
+                }
+            }
+        }               
     }
-}
+} 

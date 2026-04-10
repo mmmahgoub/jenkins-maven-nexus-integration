@@ -1,102 +1,167 @@
-# Simple Maven + Jenkins + Nexus CI/CD Project
+# 🚀 Simple Java + Maven + Docker + Jenkins + Nexus CI/CD Project
 
 ## 📌 Overview
-This project demonstrates a basic Continuous Integration / Continuous Deployment (CI/CD) pipeline using:
 
-- Java (simple application)
-- Maven (build & dependency management)
-- Jenkins (automation server)
-- Nexus (artifact repository)
+This project demonstrates a complete **CI/CD pipeline** using:
+
+* Java (simple application)
+* Maven (build & dependency management)
+* Docker (containerization)
+* Jenkins (automation server)
+* Sonatype Nexus (artifact & Docker registry)
 
 The pipeline automates:
-- Code checkout
-- Build and test execution
-- Packaging the application into a JAR
-- Publishing artifacts to Nexus
+
+* Code checkout
+* Build and unit testing
+* Packaging into a JAR
+* Building a Docker image
+* Pushing the Docker image to Nexus
 
 ---
 
 ## 🛠️ Tech Stack
-- Java 17
-- Apache Maven
-- Jenkins Pipeline (Declarative)
-- Sonatype Nexus Repository
+
+* Java 17
+* Apache Maven
+* Docker
+* Jenkins (Declarative Pipeline)
+* Sonatype Nexus Repository
 
 ---
 
 ## 📂 Project Structure
 
+```
 ├── Jenkinsfile
+
+├── Dockerfile
 
 ├── pom.xml
 
 └── src
 
-├── main/java/com/example/App.java
+    ├── main/java/com/example/App.java
 
-└── test/java/com/example/AppTest.java
-
+    └── test/java/com/example/AppTest.java
+```
 
 ---
 
 ## ⚙️ How It Works
 
 ### 1. Build & Test
+
 Maven compiles the code and runs unit tests:
-```bash
+
+
 mvn clean test
 
-2. Package
 
-Creates a JAR file:
+### 2. Package
+
+Creates an executable JAR file:
+
 
 mvn package
-3. Deploy to Nexus
 
-Uploads the artifact to Nexus:
 
-mvn deploy
+### 3. Docker Build
 
-Jenkins Pipeline
+Builds a Docker image containing the application:
 
-The pipeline includes the following stages:
 
-Checkout – Pulls source code from repository
-Build & Test – Runs unit tests
-Package – Builds the JAR file
-Deploy – Pushes artifact to Nexus
+docker build -t <nexus-registry>/my-java-app:1.0 .
 
-🔐 Credentials Management
 
-Nexus credentials are securely stored in Jenkins
-Credentials are injected during pipeline execution
+### 4. Push to Nexus (Docker Registry)
 
-Test Reporting
-JUnit reports are generated and published in Jenkins
-Build status reflects test success/failure
+Pushes the Docker image to Nexus:
 
-📦 Artifact Management
 
-Artifacts are stored in Nexus repositories:
-Snapshots → for development versions
-Releases → for stable versions
+docker push <nexus-registry>/my-java-app:1.0
 
-💡 Key Highlights
 
-End-to-end CI/CD pipeline implementation
-Automated testing and artifact deployment
-Clean and minimal project structure
-Industry-standard tools and practices
+---
 
-🎯 Purpose
+## 🔄 Jenkins Pipeline Stages
 
-This project is designed to showcase:
+* **Checkout** – Pulls source code from repository
+* **Build & Test** – Runs unit tests using Maven
+* **Package** – Builds the JAR file
+* **Docker Build** – Creates Docker image
+* **Docker Login** – Authenticates with Nexus
+* **Docker Push** – Pushes image to Nexus registry
 
-Understanding of CI/CD concepts
-Hands-on experience with Jenkins pipelines
-Integration with artifact repositories (Nexus)
-Maven-based Java project management
+---
 
-👤 Author
+## 🔐 Credentials Management
 
-[Muhanad Mohamed]
+* Nexus credentials are securely stored in Jenkins
+* Injected using Jenkins credentials binding
+* Used for Docker login during pipeline execution
+
+---
+
+## 🧪 Test Reporting
+
+* JUnit reports are generated via Maven Surefire
+* Published automatically in Jenkins
+* Build fails if any test fails
+
+---
+
+## 📦 Artifact Management
+
+Artifacts are stored in **Sonatype Nexus**:
+
+### Docker Images
+
+* Stored in a **Docker Hosted Repository**
+* Versioned using tags (e.g., `1.0`, `latest`)
+
+### JAR Files (optional)
+
+* Can still be archived in Jenkins
+* Can be deployed to Nexus Maven repositories if needed
+
+---
+
+## ⚠️ Prerequisites
+
+* Jenkins with:
+
+  * Maven configured
+  * JDK 17 installed
+  * Docker installed on agent
+* Nexus Repository with:
+
+  * Docker (hosted) repository
+  * Docker Bearer Token Realm enabled
+
+---
+
+## 💡 Key Highlights
+
+* End-to-end CI/CD pipeline
+* Automated testing and validation
+* Docker-based deployment workflow
+* Secure credential handling
+* Integration with Nexus as Docker registry
+
+---
+
+## 🎯 Purpose
+
+This project demonstrates:
+
+* CI/CD pipeline design using Jenkins
+* Docker-based application deployment
+* Integration with Nexus for artifact management
+* Maven-based Java development workflow
+
+---
+
+## 👤 Author
+
+**Muhanad Mohamed**
