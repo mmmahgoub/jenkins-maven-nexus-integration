@@ -1,0 +1,5 @@
+docker build -t dockerhubrepo/demo-app:jma-1.0       where jma-1.0 is tage name
+
+echo $PASSWORD | docker login -u $USERNAME --password-stdin    this will push to docker hub, if you use nexus you need to specify your repor
+
+docker push dockerhubrepo/demo-app:jma-1.0
